@@ -53,31 +53,13 @@ Stork works as an extension to Kubernetes, enhancing the capabilities of Portwor
 
 ---
 
-### 7. KVDB – internal vs external, use cases, pros, and cons
-
-Portworx uses KVDB (Key-Value Database) for storing metadata related to the storage cluster. 
-
-- **Internal KVDB**:
-  - **Use Case**: Suitable for smaller clusters or when simplicity is preferred over scalability.
-  - **Pros**: Easy to set up and manage since it’s built into the Portworx cluster.
-  - **Cons**: Can be a single point of failure for larger clusters; less resilient compared to external KVDB setups.
-  
-- **External KVDB**:
-  - **Use Case**: Recommended for production environments, especially with larger clusters that require high availability and resilience.
-  - **Pros**: Greater reliability and scalability; external KVDB is independent of the Portworx cluster, so it remains available even if Portworx nodes fail.
-  - **Cons**: Requires additional setup and maintenance; needs to be managed separately from the Portworx cluster.
-
-External KVDB is preferred in production for enhanced resilience, while internal KVDB can be a convenient option for testing or smaller deployments.
-
----
-
-### 8. What is the recommended size for a KVDB dedicated disk?
+### 7. What is the recommended size for a KVDB dedicated disk?
 
 The recommended size for a dedicated KVDB disk is typically **at least 50 GB**. This size allows for sufficient storage of metadata and handles potential growth as the cluster expands. For larger clusters or high-metadata workloads, you may consider increasing this size to ensure stability and performance.
 
 --- 
 
-### 9. What are the images that the operator consists of?
+### 8. What are the images that the operator consists of?
 
 [List of all the images](./portworx-images.md)
 

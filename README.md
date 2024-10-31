@@ -17,4 +17,3 @@ This section contains links to specific README files that provide detailed insig
 ## Contributing
 
 We welcome contributions to this document. If you have suggestions, corrections, or additional insights, please feel free to open an issue or submit a pull request.
-
