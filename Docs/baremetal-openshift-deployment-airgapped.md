@@ -13,7 +13,7 @@ Follow the instructions to deploy Portworx and its required packages on air-gapp
     - [Verify Portworx cluster status](#5-verify-portworx-cluster-status)
 - [Upgrade Portworx](#upgrade-portworx---steps)
 - [Install Portworx with Helm](#install-portworx-with-helm---steps)
-- [Installing cli tools](#installing-cli-tools)
+- [Installing CLI tools](#installing-cli-tools)
 - [Uninstall Portworx](#uninstall-portworx)
 
 
@@ -284,10 +284,25 @@ oc exec <px-cluster-pod-name> -n kube-system -- /opt/pwx/bin/pxctl status
 
 ---
 
-## Installing cli tools:
+## Installing CLI tools:
+
+### Install **storkctl**:
+
+Extract the storkctl binary
+```bash
+STORK_POD=$(oc get pods -n kube-system -l name=stork -o jsonpath='{.items[0].metadata.name}')
+oc cp -n kube-system $STORK_POD:/storkctl/linux/storkctl ./storkctl
+```
+
+Save the binary:
+```bash
+mv ./storkctl /usr/local/bin/storkctl
+chmod +x /usr/local/bin/storkctl
+```
 
 ### Additional Resources
-* []()
+* [storkctl](https://docs.portworx.com/portworx-enterprise/operations/operate-kubernetes/storage-operations/create-snapshots/scheduled#storkctl)
+
 
 ---
 
