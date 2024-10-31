@@ -106,4 +106,4 @@
 ---
 
 ## Additional Resources
-* https://install.portworx.com/<PORTWORX VERSION>/air-gapped?kbver=<KUBERNETES VERSION>
+* https://install.portworx.com/PORTWORX_VERSION/air-gapped?kbver=KUBERNETES_VERSION

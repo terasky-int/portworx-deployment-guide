@@ -73,12 +73,12 @@ curl -o versions.yaml "https://install.portworx.com/<PORTWORX VERSION>/version?k
 Portworx missed a few images so **add** the following image configurations if they are missing:
 
 ```
-version: 3.1.6
+version: <PORTWORX VERSION>
 components:
     ...
-    kubeScheduler: custom-registry.org/k8s/kube-scheduler-amd64:v1.26.4
-    kubeControllerManager: custom-registry.org/k8s/kube-controller-manager-amd64:v1.26.4
-    pause: custom-registry.org/k8s/pause:3.1
+    kubeScheduler: custom-registry.org/k8s/kube-scheduler-amd64:<VERSION>
+    kubeControllerManager: custom-registry.org/k8s/kube-controller-manager-amd64:<VERSION>
+    pause: custom-registry.org/k8s/pause:<VERSION>
 ```
 
 
@@ -149,7 +149,7 @@ docker tag <loaded_image_name> your-registry/path_to_image/name_of_the_image:ima
 docker push <tagged_image_name>
 ```
 
-Note: For a link to a script that can be used to automate the process, press [here](../conf_files/)
+Note: For a link to a script that can be used to automate the process, press [here](../conf_files/push_images_to_registry.sh)
 
 ### 4. Create the Portworx cluster
 
@@ -176,30 +176,91 @@ oc apply -f storagecluster.yaml
 1. Make sure all the pods are in a running state (may take up to 15 minutes)
 
 ```bash
-watch kubectl get pods -n kube-system | grep -e portworx -e px
+watch oc get pods -n kube-system | grep -e portworx -e px
 ```
 
 2. Verify Portworx status
 
 ```bash
-kubectl exec <px-cluster-pod-name> -n kube-system -- /opt/pwx/bin/pxctl status
+oc exec <px-cluster-pod-name> -n kube-system -- /opt/pwx/bin/pxctl status
 ```
 
 3. Verify pxctl cluster provision status
 
 * Make sure the status of the storage cluster is Running
 ```bash
-kubectl -n kube-system get storagecluster
+oc -n kube-system get storagecluster
 ```
 * Make sure the status of the storage nodes is Online
 ```bash
-kubectl -n kube-system get storagenodes
+oc -n kube-system get storagenodes
 ```
 
 
 ### Additional Resources
 * [Portworx on bare metal air-gapped Kubernetes cluster](https://docs.portworx.com/portworx-enterprise/platform/kubernetes/bare-metal/airgapped-baremetal/install)
 * [Portworx on air-gapped OpenShift on vSphere](https://docs.portworx.com/portworx-enterprise/platform/openshift/ocp-vsphere/install/ocp-vsphere-airgapped)
+
+---
+
+## Upgrade Portworx - steps:
+
+Before beginning the upgrade, ensure that all volumes have a minimum of 2 replicas, as required by best practices. Without this replication level, the upgrade process will not proceed.
+
+1. Whitelist the images with the new versions into air-gappd environment 
+
+Repeat this [step](#1-whitelist-images-into-air-gappd-environment) with the images of the new versions
+
+2. Push the images with the new versions into the registry in the right location
+
+Repeat this [step](#3-push-the-images-into-the-registry)
+
+3. Update px-versions:
+
+* Get the new versions file for the new Portworx version, edit the registry to your registry.
+
+```bash
+curl -o versions.yaml "https://install.portworx.com/<NEW_PORTWORX_VERSION>/version?kbver=<KUBERNETES_VERSION>"
+```
+
+**Note**:
+Portworx missed a few images so **add** the following image configurations if they are missing:
+
+```
+version: <PORTWORX VERSION>
+components:
+    ...
+    kubeScheduler: custom-registry.org/k8s/kube-scheduler-amd64:<NEW_VERSION>
+    kubeControllerManager: custom-registry.org/k8s/kube-controller-manager-amd64:<NEW_VERSION>
+    pause: custom-registry.org/k8s/pause:<NEW_VERSION>
+```
+
+* Delete the old configmap and replace with a new one.
+
+```bash
+oc -n kube-system delete configmap px-versions
+oc -n kube-system create configmap px-versions --from-file=versions.yaml
+```
+
+4. Upgrade the cluster by patching it:
+
+```bash
+STC=$(oc get stc -n kube-system -o jsonpath='{.items[].metadata.name}')
+oc patch stc $STC -n kube-system --type json --patch '[{"op": "replace", "path": "/spec/image", "value":"portworx/oci-monitor:<NEW_VERSION>"}]'
+```
+
+5. Verify the Upgrade
+
+Confirm the upgrade by checking the Portworx version on the nodes:
+```bash
+oc get storagenodes -n kube-system -l name=portworx
+```
+
+**Note**: For air-gapped clusters, if you do not see the expected image versions that you have configured in the configmap, you should edit the StorageCluster to include the autoUpdateComponents: Once parameter. This will force Portworx Operator to reconcile all the components and retrieve the correct images.
+
+### Additional Resources
+* [Upgrade Portworx in OpenShift - Make sure you complete the Prerequisites](https://docs.portworx.com/portworx-enterprise/platform/openshift/ocp-vsphere/upgrade/upgrade-operator)
+* [Upgrade Portworx](https://docs.portworx.com/poc/maintenance_upgrade-portworx)
 
 ---
 

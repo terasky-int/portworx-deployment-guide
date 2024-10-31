@@ -64,7 +64,7 @@ The recommended size for a dedicated KVDB disk is typically **at least 50 GB**. 
 [List of all the images](./portworx-images.md)
 
 #### Additional Resources
-* https://install.portworx.com/<PORTWORX VERSION>/air-gapped?kbver=<KUBERNETES VERSION>
+* https://install.portworx.com/PORTWORX_VERSION/air-gapped?kbver=KUBERNETES_VERSION
 
 --- 
 
