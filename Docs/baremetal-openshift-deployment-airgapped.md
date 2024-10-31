@@ -10,9 +10,7 @@ Follow the instructions to deploy Portworx and its required packages on air-gapp
     - [Create and whitelist Portworx configuration files](#2-create-and-whitelist-portworx-configuration-files)
     - [Push the images into the registry](#3-push-the-images-into-the-registry)
     - [Create the Portworx cluster](#4-create-the-portworx-cluster)
-    - []()
-    - []()
-    - []()
+    - [Verify Portworx cluster status](#5-verify-portworx-cluster-status)
 - [Install Portworx with Helm](#install-portworx-with-helm---steps)
 - [Uninstall Portworx](#uninstall-portworx)
 
@@ -207,6 +205,8 @@ kubectl -n kube-system get storagenodes
 
 ## Install Portworx with Helm - steps:
 
+### Additional Resources
+* [Portworx Helm Chart](https://github.com/portworx/helm/tree/master/charts/portworx)
 
 ---
 
@@ -234,3 +234,5 @@ oc -n kube-system delete configmap px-versions
 
 ### Additional Resources
 * [Uninstall Portworx Cluster](https://docs.portworx.com/portworx-enterprise/platform/kubernetes/bare-metal/airgapped-baremetal/uninstall/uninstall-operator)
+
+---
