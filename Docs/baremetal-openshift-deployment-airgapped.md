@@ -11,7 +11,9 @@ Follow the instructions to deploy Portworx and its required packages on air-gapp
     - [Push the images into the registry](#3-push-the-images-into-the-registry)
     - [Create the Portworx cluster](#4-create-the-portworx-cluster)
     - [Verify Portworx cluster status](#5-verify-portworx-cluster-status)
+- [Upgrade Portworx](#upgrade-portworx---steps)
 - [Install Portworx with Helm](#install-portworx-with-helm---steps)
+- [Installing cli tools](#installing-cli-tools)
 - [Uninstall Portworx](#uninstall-portworx)
 
 
@@ -251,9 +253,20 @@ oc patch stc $STC -n kube-system --type json --patch '[{"op": "replace", "path":
 
 5. Verify the Upgrade
 
-Confirm the upgrade by checking the Portworx version on the nodes:
+* Wait for all the pods to be ready
+```bash
+watch oc get pods -lname=portworx -n kube-system
+```
+
+* Confirm the upgrade by checking the Portworx version on the nodes:
 ```bash
 oc get storagenodes -n kube-system -l name=portworx
+```
+
+* Verify Portworx status
+
+```bash
+oc exec <px-cluster-pod-name> -n kube-system -- /opt/pwx/bin/pxctl status
 ```
 
 **Note**: For air-gapped clusters, if you do not see the expected image versions that you have configured in the configmap, you should edit the StorageCluster to include the autoUpdateComponents: Once parameter. This will force Portworx Operator to reconcile all the components and retrieve the correct images.
@@ -268,6 +281,13 @@ oc get storagenodes -n kube-system -l name=portworx
 
 ### Additional Resources
 * [Portworx Helm Chart](https://github.com/portworx/helm/tree/master/charts/portworx)
+
+---
+
+## Installing cli tools:
+
+### Additional Resources
+* []()
 
 ---
 
