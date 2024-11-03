@@ -279,8 +279,11 @@ oc exec <px-cluster-pod-name> -n kube-system -- /opt/pwx/bin/pxctl status
 
 ## Install Portworx with Helm - steps:
 
+Will be updated soon!
+
 ### Additional Resources
 * [Portworx Helm Chart](https://github.com/portworx/helm/tree/master/charts/portworx)
+* [Helm Chart - Values description](https://docs.portworx.com/portworx-enterprise/reference/helm-chart)
 
 ---
 
