@@ -1,7 +1,7 @@
 # Portworx Best Practices
 
 This document provides detailed best practices for Portworx.
----
+
 
 ## 1. How frequently should we upgrade the Portworx cluster?
 
@@ -20,10 +20,22 @@ For a bare-metal OpenShift environment in an air-gapped setup, Portworx generall
 
 However, if you have a robust external KVDB setup that can meet high availability and performance requirements, it can still be a viable option.
 
+### Additional Resources
+* [Portworx Internal vs External KVDB Recommendations](https://docs.portworx.com/portworx-enterprise/platform/kubernetes/bare-metal/bare-metal/operations/kvdb-for-portworx)
+
+
 ## 3. Recommended Disk Configuration for Portworx Storage
 
 - For production environments, use **dedicated SSDs** or NVMe drives for Portworx storage to ensure optimal I/O performance.
 - If possible, provision **separate storage for KVDB** to ensure that it has dedicated resources for handling metadata operations. This is especially important if using an internal KVDB.
+
+The recommended size for a dedicated KVDB disk is depended on:
+* If IOPS are independent of disk size, the **minimum recommended size is 32 GB and a minimum of 450 IOPs**.
+* If IOPS are dependent on disk size, the **recommended size is 150 GB to ensure you get a minimum of 450 IOPs**.
+
+#### Additional Resources
+* [Internal KVDB for Portworx on bare metal](https://docs.portworx.com/portworx-enterprise/platform/kubernetes/bare-metal/bare-metal/operations/kvdb-for-portworx/internal-kvdb)
+
 
 ## 4. Replication Factor for Volumes
 
