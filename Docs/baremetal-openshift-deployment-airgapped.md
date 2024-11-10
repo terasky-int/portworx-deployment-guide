@@ -127,11 +127,25 @@ Example for genarated [storagecluster](../conf_files/yamls/storagecluster.yaml)
 curl -o operator.yaml "https://install.portworx.com/<PORTWORX VERSION>?comp=pxoperator&reg=<CUSTOM REGISTRY PREFIX>"
 ```
 
+4. Genarate this configmap to configure the OpenShift Prometheus deployment to monitor Portworx metrics.
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true
+```
+
 4. Whitelist the previously created files:
 
     1. storagecluster.yaml
     2. operator.yaml
     3. versions.yaml
+    4. cluster-monitoring-config.yaml
 
 ### 3. Push the images into the registry
 
@@ -161,13 +175,19 @@ Note: For a link to a script that can be used to automate the process, press [he
 oc -n kube-system create configmap px-versions --from-file=versions.yaml
 ```
 
-2. Apply the operator file
+2. Apply monitoring cm
+
+```bash
+oc apply -f cluster-monitoring-config.yaml
+```
+
+3. Apply the operator file
 
 ```bash
 oc apply -f operator.yaml
 ```
 
-3. Apply the storagecluster file
+4. Apply the storagecluster file
 
 ```bash
 oc apply -f storagecluster.yaml

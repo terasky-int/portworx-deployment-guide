@@ -96,4 +96,52 @@ The recommended size for a dedicated KVDB disk is depended on:
 
 --- 
 
+### 10. Set Portworx parameters to immediately replicate a volume back to two replicas without waiting 24 hours
+
+1. **`repl-move-timeout`**:
+    **Time threshold**, defaults to 24 hours (1440 minutes).
+    Note: Set to 10 minutes (per Portworx recommendation).
+
+2. **Do not adjust** `repl-move-timestamp-records-threshold` (per Portworx recommendation).
+    **Data threshold**, based on the amount of data needing resync, approximately XX GB.
+    Note: **Do not adjust** (per Portworx recommendation).
+
+---
+
+### 11. What happens if overprovisioning occurs and space runs out in a PVC.
+
+The storage system has two thresholds:
+
+- **80% Capacity**: When storage reaches 80% usage, an alert is triggered.
+- **90% Capacity**: At 90% usage, the volume will switch to read-only mode by default.
+
+Notes: 
+* The thresholds can be modifyed.
+* In order to get the volume out of read-only mode:
+    - Run **pxctl volume update <new_size>**, then restart the pod.
+
+---
+
+### 12. What happens if overprovisioning occurs and space runs out in the storage pool.
+
+#### Additional Resources
+* [Implications on environment](https://docs.portworx.com/portworx-enterprise/operations/operate-kubernetes/storage-operations/manage-storagepool.html#implications-of-a-full-pool)
+
+---
+
+### 13. Do I actuuly need all the images?
+
+Per Portworx recommendation, yes all the images are needed.
+
+---
+
+### 14. How to set up monitoring?
+
+Follow the guide below
+
+#### Additional Resources
+* [Monitoring in Portworx](https://docs.portworx.com/portworx-enterprise/platform/openshift/ocp-bare-metal/set-ocp-prometheus)
+
+---
+
 This concludes the common questions on Portworx. For further assistance, please consult the Portworx documentation or contact support.

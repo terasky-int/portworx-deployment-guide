@@ -13,6 +13,7 @@ This section contains links to specific README files that provide detailed insig
 - [Best Practices](./Docs/best-practices.md) - Guidelines for optimizing your Portworx deployment.
 - [Common Questions](./Docs/common-questions.md) - Answers to frequently asked questions regarding Portworx.
 - [Deployment Guide](./Docs/baremetal-openshift-deployment-airgapped.md) - Step-by-step instructions for deploying Portworx on bare metal in an air-gapped environment.
+- [Operations](./Docs/Operations.md) - Operations on Portworx.
 
 ## Contributing
 
