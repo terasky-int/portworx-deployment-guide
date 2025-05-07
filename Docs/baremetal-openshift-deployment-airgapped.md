@@ -70,7 +70,7 @@ docker save -o <path for generated tar file> <image_name:version>
 curl -o versions.yaml "https://install.portworx.com/<PORTWORX VERSION>/version?kbver=<KUBERNETES VERSION>"
 ```
 
-**Importent Note**:
+**Important Note**:
 
 Portworx missed a few images so **add** the following image configurations if they are missing:
 
